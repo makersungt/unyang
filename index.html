@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>레모네이드 진하기 실험실</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F2F7F4; --ink:#13261C; --sub:#5B6E63; --card:#FFFFFF; --line:#D6E4DB;
+  --lemon:#F5C518; --lemon-l:#FFF6CC; --leaf:#1F8A55; --leaf-l:#DFF3E7; --tomato:#E5432F; --a:#2C66D8; --b:#D2577B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html,body{background:var(--bg)}
+body{color:var(--ink);font-family:"Noto Sans KR",system-ui,-apple-system,"Malgun Gothic",sans-serif;font-size:18px;line-height:1.45}
+button,input{font:inherit}
+button{cursor:pointer;border:0}
+button:focus-visible,input:focus-visible{outline:4px solid var(--a);outline-offset:2px}
+.top{background:var(--ink);color:#fff;padding:14px max(16px,env(safe-area-inset-right,0px)) 14px max(16px,env(safe-area-inset-left,0px))}
+.top-in{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{font-family:"Jua",sans-serif;font-size:32px}
+@media (max-width:520px){.brand{font-size:24px}}
+.tag{background:var(--lemon);color:var(--ink);font-weight:900;font-size:15px;padding:4px 12px;border-radius:999px}
+.reset{margin-left:auto;background:rgba(255,255,255,.14);color:#fff;padding:8px 16px;border-radius:999px;font-weight:700}
+.wrap{max-width:1280px;margin:0 auto;padding:18px max(16px,env(safe-area-inset-right,0px)) 32px max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:18px}
+.safe{background:var(--lemon-l);border-left:8px solid var(--lemon);border-radius:12px;padding:12px 16px;font-size:16px}
+.lab{display:grid;grid-template-columns:minmax(0,1fr) 300px minmax(0,1fr);gap:18px;align-items:stretch}
+@media (max-width:1000px){.lab{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.mid{grid-column:1 / -1;order:3}}
+@media (max-width:640px){.lab{grid-template-columns:minmax(0,1fr)}}
+.cup{background:var(--card);border-radius:22px;border:3px solid var(--line);padding:16px;display:flex;flex-direction:column;gap:10px}
+.cup h2{font-family:"Jua",sans-serif;font-weight:400;font-size:30px;display:flex;align-items:center;gap:10px}
+.cup h2 .chip{font-family:"Noto Sans KR",sans-serif;font-size:15px;font-weight:700;color:#fff;padding:3px 10px;border-radius:999px}
+#cupA{border-color:#BBD0F6} #cupA .chip{background:var(--a)}
+#cupB{border-color:#F0C3D0} #cupB .chip{background:var(--b)}
+svg.glass{width:100%;max-width:260px;height:auto;align-self:center;display:block}
+.tomato{transition:transform .8s cubic-bezier(.3,1.3,.5,1)}
+.liquid{transition:y .5s, height .5s, fill .5s}
+.ctl{display:grid;grid-template-columns:64px 52px minmax(0,1fr) 52px;align-items:center;gap:8px}
+.ctl label{font-weight:900;font-size:20px}
+.ctl .val{grid-column:1 / -1;font-size:15px;color:var(--sub);margin-top:-6px}
+.ctl button{width:52px;height:52px;border-radius:14px;background:#EAF0EC;font-size:28px;font-weight:900;line-height:1}
+.ctl input[type=range]{width:100%;accent-color:var(--leaf);height:32px}
+.read{background:#F6FAF7;border-radius:12px;padding:10px 12px;font-size:17px}
+.read b{font-size:22px}
+.mid{background:var(--card);border-radius:22px;border:3px solid var(--ink);padding:16px;display:flex;flex-direction:column;gap:12px}
+.mid h3{font-family:"Jua",sans-serif;font-weight:400;font-size:26px}
+.bar{display:grid;grid-template-columns:28px minmax(0,1fr) 54px;gap:8px;align-items:center;font-weight:900}
+.track{background:#EEF3EF;border-radius:999px;height:22px;overflow:hidden}
+.fill{height:100%;border-radius:999px;transition:width .5s}
+.verdict{font-size:24px;font-weight:900;text-align:center;background:var(--leaf-l);color:var(--leaf);border-radius:14px;padding:12px}
+.why{font-size:15px;color:var(--sub)}
+.think{background:var(--lemon-l);border-radius:14px;padding:12px 14px;font-size:16px}
+.missions{background:var(--card);border-radius:22px;border:3px solid var(--line);padding:16px;display:flex;flex-direction:column;gap:10px}
+.missions h3{font-family:"Jua",sans-serif;font-weight:400;font-size:26px;display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.missions h3 span{font-family:"Noto Sans KR",sans-serif;font-size:16px;color:var(--sub)}
+.mlist{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:900px){.mlist{grid-template-columns:minmax(0,1fr)}}
+.m{border:3px solid var(--line);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;transition:background .3s,border-color .3s}
+.m .n{font-weight:900;color:var(--sub);font-size:15px}
+.m .t{font-weight:700;font-size:18px}
+.m .h{font-size:14px;color:var(--sub)}
+.m.done{border-color:var(--leaf);background:var(--leaf-l)}
+.m.done .n::after{content:"  ✓ 성공!";color:var(--leaf)}
+.save{background:var(--card);border-radius:22px;border:3px solid var(--line);padding:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.save input{flex:1;min-width:220px;border:3px solid var(--line);border-radius:12px;padding:10px 12px;font-size:18px}
+.btn{background:var(--ink);color:#fff;font-weight:900;padding:12px 18px;border-radius:14px;font-size:18px}
+.btn.a{background:var(--a)} .btn.b{background:var(--b)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 20px;border-radius:999px;font-weight:700;z-index:30}
+.foot{color:var(--sub);font-size:14px}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <div class="brand">🍋 레모네이드 진하기 실험실</div>
+    <span class="tag">모형 시뮬레이션</span>
+    <button class="reset" id="reset">처음 상태로</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="safe">🔬 <b>실험실 약속</b> 과학 실험에 쓴 용액은 맛보지 않아요. 진하기는 <b>색깔</b>, <b>물체가 뜨는 정도</b>처럼 눈으로 비교해요. 이 앱은 생각을 돕는 <b>모형</b>이라 방울토마토가 뜨는 정도는 실제 실험과 다를 수 있어요.</p>
+
+  <section class="lab">
+    <div class="cup" id="cupA"></div>
+    <div class="mid" id="mid"></div>
+    <div class="cup" id="cupB"></div>
+  </section>
+
+  <section class="missions">
+    <h3>미션 <span id="mcount">3개 중 0개 성공</span></h3>
+    <div class="mlist">
+      <div class="m" id="m1"><p class="n">미션 1</p><p class="t">물의 양은 다르게, 진하기는 같게 만들어 보세요.</p><p class="h">힌트: 물이 두 배면 설탕은?</p></div>
+      <div class="m" id="m2"><p class="n">미션 2</p><p class="t">B의 설탕을 A보다 적게 넣고도, B를 더 진하게 만들어 보세요.</p><p class="h">힌트: 설탕 말고 바꿀 수 있는 것은?</p></div>
+      <div class="m" id="m3"><p class="n">미션 3</p><p class="t">A는 물 100 mL·설탕 2숟가락. B는 물 300 mL로 A와 같은 진하기!</p><p class="h">힌트: 100 mL가 몇 번 들어 있나요?</p></div>
+    </div>
+  </section>
+
+  <section class="save">
+    <input id="rname" maxlength="20" placeholder="레시피 이름 (예: 우리 모둠 상큼 레모네이드)" aria-label="레시피 이름">
+    <button class="btn a" id="saveA">A 레시피 카드 저장</button>
+    <button class="btn b" id="saveB">B 레시피 카드 저장</button>
+  </section>
+  <p class="foot">진하기 = 물 100 mL마다 넣은 설탕 숟가락 수로 비교하는 모형이에요. 이름·사진 같은 개인 정보는 넣지 않아요.</p>
+</main>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const START = {A: {w: 100, s: 2}, B: {w: 200, s: 2}};
+const S = JSON.parse(JSON.stringify(START));
+const COLOR = {A: '#2C66D8', B: '#D2577B'};
+const done = {m1: false, m2: false, m3: false};
+
+const idx = c => c.s * 100 / c.w;                // 물 100 mL마다 설탕 숟가락 수
+const fmt = n => Number.isInteger(n) ? String(n) : (Math.round(n * 10) / 10).toString();
+function mix(t){                                  // 0~1 → 연노랑~진노랑
+  const a = [255, 251, 226], b = [236, 172, 0];
+  return `rgb(${a.map((v, i) => Math.round(v + (b[i] - v) * t)).join(',')})`;
+}
+
+/* 컵 그리기 (viewBox 0 0 240 300, 바닥 y=270, 최대 수면 y=60) */
+function cupSVG(k){
+  return `
+  <svg class="glass" viewBox="0 0 240 300" role="img" aria-label="${k} 컵">
+    <defs><clipPath id="clip${k}"><path d="M34 20 H206 L186 270 Q120 282 54 270 Z"/></clipPath></defs>
+    <g clip-path="url(#clip${k})">
+      <rect x="0" y="0" width="240" height="300" fill="#F7FBFF"/>
+      <rect class="liquid" id="liq${k}" x="0" width="240" y="200" height="100" fill="#FFF8D8"/>
+      <g id="spark${k}"></g>
+      <g class="tomato" id="tom${k}">
+        <circle cx="120" cy="0" r="17" fill="#E5432F"/>
+        <path d="M112 -15 Q120 -10 128 -15 L124 -11 L120 -18 L116 -11 Z" fill="#1F8A55"/>
+        <ellipse cx="114" cy="-5" rx="5" ry="3" fill="#fff" opacity=".45"/>
+      </g>
+    </g>
+    <path d="M34 20 H206 L186 270 Q120 282 54 270 Z" fill="none" stroke="#13261C" stroke-width="5" stroke-linejoin="round"/>
+    <g id="marks${k}" font-size="13" fill="#5B6E63" font-family="Noto Sans KR, sans-serif"></g>
+    <circle cx="196" cy="26" r="22" fill="#F5C518" stroke="#13261C" stroke-width="4"/>
+    <path d="M196 8 V44 M178 26 H214 M184 14 L208 38 M208 14 L184 38" stroke="#fff" stroke-width="2.5"/>
+  </svg>`;
+}
+function cupPanel(k){
+  return `
+    <h2>컵 ${k} <span class="chip">${k === 'A' ? '파랑' : '분홍'}</span></h2>
+    ${cupSVG(k)}
+    <div class="ctl">
+      <label for="w${k}">물</label>
+      <button data-k="${k}" data-f="w" data-d="-50" aria-label="물 줄이기">−</button>
+      <input type="range" id="w${k}" min="100" max="300" step="50" data-k="${k}" data-f="w">
+      <button data-k="${k}" data-f="w" data-d="50" aria-label="물 늘리기">+</button>
+      <p class="val" id="wv${k}"></p>
+    </div>
+    <div class="ctl">
+      <label for="s${k}">설탕</label>
+      <button data-k="${k}" data-f="s" data-d="-1" aria-label="설탕 빼기">−</button>
+      <input type="range" id="s${k}" min="0" max="12" step="1" data-k="${k}" data-f="s">
+      <button data-k="${k}" data-f="s" data-d="1" aria-label="설탕 넣기">+</button>
+      <p class="val" id="sv${k}"></p>
+    </div>
+    <p class="read" id="read${k}"></p>`;
+}
+['A', 'B'].forEach(k => { $('#cup' + k).innerHTML = cupPanel(k); });
+
+function sprinkle(k){
+  const g = $('#spark' + k), surf = 270 - S[k].w / 300 * 210;
+  for (let i = 0; i < 8; i++){
+    const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    const x = 80 + Math.random() * 80;
+    c.setAttribute('cx', x); c.setAttribute('cy', surf - 30); c.setAttribute('r', 3 + Math.random() * 2);
+    c.setAttribute('fill', '#fff'); c.setAttribute('stroke', '#C9B98A');
+    c.animate([{transform: 'translateY(0)', opacity: 1}, {transform: `translateY(${50 + Math.random() * 40}px)`, opacity: 0}],
+      {duration: 900 + Math.random() * 400, easing: 'ease-in', fill: 'forwards'});
+    g.appendChild(c); setTimeout(() => c.remove(), 1500);
+  }
+}
+
+function drawCup(k){
+  const c = S[k], i = idx(c);
+  const surf = 270 - c.w / 300 * 210;                       // 수면 높이
+  const liq = $('#liq' + k);
+  liq.setAttribute('y', surf); liq.setAttribute('height', 300 - surf);
+  liq.setAttribute('fill', mix(Math.min(i / 6, 1)));
+  // 방울토마토: 진하기 1 이하 바닥, 4 이상 수면 (모형 규칙)
+  const t = Math.max(0, Math.min(1, (i - 1) / 3));
+  const bottom = 270 - 20, top = surf + 6;
+  $('#tom' + k).style.transform = `translateY(${bottom - t * (bottom - top)}px)`;
+  $('#marks' + k).innerHTML = [100, 200, 300].map(v => {
+    const y = 270 - v / 300 * 210, x = 34 + (y - 20) / 250 * 20 + 3;   // 왼쪽 벽 안쪽
+    return `<line x1="${x}" x2="${x + 14}" y1="${y}" y2="${y}" stroke="#5B6E63" stroke-width="2"/><text x="${x + 18}" y="${y + 5}">${v} mL</text>`;
+  }).join('');
+  $('#w' + k).value = c.w; $('#s' + k).value = c.s;
+  $('#wv' + k).textContent = `${c.w} mL`;
+  $('#sv' + k).textContent = `${c.s}숟가락`;
+  const pos = t === 0 ? '바닥에 가라앉아 있어요' : t === 1 ? '수면까지 떠올랐어요' : '중간쯤 떠 있어요';
+  $('#read' + k).innerHTML = `물 100 mL마다 설탕 <b>${fmt(i)}</b>숟가락<br>방울토마토: ${pos}`;
+}
+
+function drawMid(){
+  const a = idx(S.A), b = idx(S.B);
+  const cross = S.A.s * S.B.w - S.B.s * S.A.w;               // 정수로 비교
+  const v = cross === 0 ? '진하기가 같아요' : cross > 0 ? 'A가 더 진해요' : 'B가 더 진해요';
+  const max = Math.max(6, a, b);
+  $('#mid').innerHTML = `
+    <h3>어느 컵이 더 진할까?</h3>
+    <div class="bar"><span style="color:${COLOR.A}">A</span><div class="track"><div class="fill" style="width:${a / max * 100}%;background:${COLOR.A}"></div></div><span>${fmt(a)}</span></div>
+    <div class="bar"><span style="color:${COLOR.B}">B</span><div class="track"><div class="fill" style="width:${b / max * 100}%;background:${COLOR.B}"></div></div><span>${fmt(b)}</span></div>
+    <p class="verdict">${v}</p>
+    <p class="why">막대: 물 100 mL마다 설탕 숟가락 수<br>설탕 양만 보지 말고 <b>물의 양</b>도 함께 봐요.</p>
+    <p class="why">A: 물 ${S.A.w} mL · 설탕 ${S.A.s}숟가락<br>B: 물 ${S.B.w} mL · 설탕 ${S.B.s}숟가락</p>
+    <div style="flex:1"></div>
+    <p class="think">💬 <b>생각해 보기</b><br>집에서 탄 레모네이드가 너무 달아요. 설탕을 빼지 않고 고치는 방법은?</p>`;
+}
+
+function checkMissions(){
+  const A = S.A, B = S.B;
+  const r = {
+    m1: A.w !== B.w && A.s > 0 && A.s * B.w === B.s * A.w,
+    m2: B.s < A.s && B.s * A.w > A.s * B.w,
+    m3: A.w === 100 && A.s === 2 && B.w === 300 && B.s === 6,
+  };
+  for (const k in r){
+    if (r[k] && !done[k]){ done[k] = true; $('#' + k).classList.add('done'); toast(`미션 ${k.slice(1)} 성공! 🎉`); }
+  }
+  const n = Object.values(done).filter(Boolean).length;
+  $('#mcount').textContent = `3개 중 ${n}개 성공`;
+}
+
+function render(changed){
+  drawCup('A'); drawCup('B'); drawMid(); checkMissions();
+}
+function setVal(k, f, v){
+  const lim = f === 'w' ? [100, 300] : [0, 12];
+  v = Math.max(lim[0], Math.min(lim[1], v));
+  const up = f === 's' && v > S[k].s;
+  S[k][f] = v; render();
+  if (up) sprinkle(k);
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('button[data-k]');
+  if (b) setVal(b.dataset.k, b.dataset.f, S[b.dataset.k][b.dataset.f] + Number(b.dataset.d));
+});
+document.addEventListener('input', e => {
+  const r = e.target.closest('input[type=range]');
+  if (r) setVal(r.dataset.k, r.dataset.f, Number(r.value));
+});
+$('#reset').onclick = () => { S.A = {...START.A}; S.B = {...START.B}; render(); toast('처음 상태로 돌렸어요. 미션 기록은 그대로예요.'); };
+
+let tt;
+function toast(m){ const t = $('#toast'); t.textContent = m; t.hidden = false; clearTimeout(tt); tt = setTimeout(() => t.hidden = true, 2200); }
+
+/* 레시피 카드 저장 */
+function saveCard(k){
+  const c = S[k], i = idx(c);
+  const name = ($('#rname').value.trim() || `컵 ${k} 레모네이드`).slice(0, 20);
+  const W = 720, H = 420;
+  const cv = document.createElement('canvas'); cv.width = W * 2; cv.height = H * 2;
+  const g = cv.getContext('2d'); g.scale(2, 2);
+  const F = '"Noto Sans KR", "Malgun Gothic", sans-serif';
+  g.fillStyle = '#FFFDF2'; g.fillRect(0, 0, W, H);
+  g.fillStyle = '#13261C'; g.fillRect(0, 0, W, 70);
+  g.fillStyle = '#F5C518'; g.font = `900 26px ${F}`; g.fillText('🍋 나의 레모네이드 레시피', 28, 45);
+  // 컵
+  const x0 = 470, top = 110, bot = 360, wTop = 190, wBot = 150;
+  const surf = bot - c.w / 300 * (bot - top);
+  g.save(); g.beginPath();
+  g.moveTo(x0, top); g.lineTo(x0 + wTop, top); g.lineTo(x0 + wTop - 20, bot); g.lineTo(x0 + 20, bot); g.closePath(); g.clip();
+  g.fillStyle = mix(Math.min(i / 6, 1)); g.fillRect(x0, surf, wTop, bot - surf);
+  const t = Math.max(0, Math.min(1, (i - 1) / 3));
+  const ty = (bot - 20) - t * ((bot - 20) - (surf + 6));
+  g.fillStyle = '#E5432F'; g.beginPath(); g.arc(x0 + wTop / 2, ty, 16, 0, Math.PI * 2); g.fill();
+  g.restore();
+  g.strokeStyle = '#13261C'; g.lineWidth = 5; g.lineJoin = 'round';
+  g.beginPath(); g.moveTo(x0, top); g.lineTo(x0 + wTop, top); g.lineTo(x0 + wTop - 20, bot); g.lineTo(x0 + 20, bot); g.closePath(); g.stroke();
+  // 글
+  g.fillStyle = '#13261C'; g.font = `900 30px ${F}`; g.fillText(name, 28, 126);
+  g.font = `700 24px ${F}`;
+  g.fillText(`물  ${c.w} mL`, 28, 186);
+  g.fillText(`설탕  ${c.s}숟가락`, 28, 230);
+  g.fillStyle = COLOR[k]; g.font = `900 24px ${F}`;
+  g.fillText(`물 100 mL마다 설탕 ${fmt(i)}숟가락`, 28, 284);
+  g.fillStyle = '#5B6E63'; g.font = `400 16px ${F}`;
+  g.fillText('물을 두 배로 늘리면 설탕도 두 배! 같은 맛을 내려면?', 28, 326);
+  g.fillText('모형 실험 결과 · 실험실 용액은 맛보지 않아요', 28, 392);
+  cv.toBlob(b => {
+    const a = document.createElement('a'); a.href = URL.createObjectURL(b);
+    a.download = `lemonade-${k}.png`; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+    toast(`${k} 레시피 카드를 저장했어요.`);
+  });
+}
+$('#saveA').onclick = () => saveCard('A');
+$('#saveB').onclick = () => saveCard('B');
+
+render();
+</script>
+</body>
+</html>
